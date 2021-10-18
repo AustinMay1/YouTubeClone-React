@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SearchBar from './Components/SearchBar/SearchBar';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
+import CommentForm from './components/CommentForm/CommentForm';
+import RealatedVideos from './components/RelatedVideos/RelatedVideos';
 
 
 class App extends Component {
   constructor(props) {
     super(props);
       this.state = {
-      
+        videoId:'',
+        title:'',
+        commentBody:'',
+        relatedVideos:'',
       }
   }
 
@@ -21,7 +26,44 @@ class App extends Component {
     let response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&type=video&part=snippet&key=APIkey`);
     let allVideos = response.data;
 
+    this.getRelatedVideos({
+      videoId: allVideos.items[0].id.videoId,
+      title: allVideos.items[0].snippet.title,
+    })
+
     
+  }
+  getRelatedVideos = async (video) =>{
+    let response = await axios.get(`https://www.googleapis.com/youtube/v3/search?relatedToVideoId=${video.videoId}&type=video&part=snippet&key=APIkey`);
+    let relatedVideos = response.data.items.filter(video => video.snippet);
+    let relatedVideosArray = relatedVideos.map((video) =>{
+      return ({
+        videoId: video.id.videoId,
+        title: video.snippet.title,
+      });
+    });
+    this.setState({
+      videoId: video.videoId,
+      title: video.title,
+      relatedVideos: relatedVideosArray
+    })
+
+  }
+
+  addComment = async () => {
+    const comment = {
+      videoId:this.props.videoId,
+      commentBody: this.state.commentBody,
+    }
+    try{
+      await axios.post('http://127.0.0.1:8000/comment/', comment);
+      this.props.getComments();
+      this.setState({
+      });
+    }
+    catch(err){
+      console.log(err)
+    }
   }
 
   render() { 
@@ -49,6 +91,8 @@ class App extends Component {
           </div>
           <br />
           <br />
+          <RealatedVideos/>
+          <CommentForm/>
 
         </React.Fragment>
       </div>
