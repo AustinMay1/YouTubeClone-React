@@ -1,17 +1,23 @@
 import React, { createFactory } from 'react';
 
-const RelatedVideos = (props) => {
-    function title(){
-        return props.RelatedVideos.map((video)=>{
-            return(
-                <li><a href= {`http://www.youtube.com/watch?v=${video.videoId}`}>{video.videoId}</a></li>
-            );
-        })
-    }
+const VideosArray = (props) => {
+    // function title(){
+    //     return props.videosArray.map((video)=>{
+    //         return(
+    //             <li><a href= {`http://www.youtube.com/watch?v=${video.videoId}`}>{video.videoId}</a></li>
+    //         );
+    //     })
+    // }
         return(
             <div>
-                {title()}
+                {console.log("Related Videos Comp Props: ", props.VideosArray)}
+                {props.VideosArray.map((video,index) => {
+                    return (
+                        <li><a href= {`http://www.youtube.com/watch?v=${video.videoId}`}>{video.videoId}</a></li>
+                    )
+                })}
+
             </div>
         );
 }
-export default RelatedVideos
+export default VideosArray

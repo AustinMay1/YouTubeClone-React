@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import SearchBar from './Components/SearchBar/SearchBar';
+import SearchBar from './components/SearchBar/SearchBar';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 import CommentForm from './components/CommentForm/CommentForm';
-import RealatedVideos from './components/RelatedVideos/RelatedVideos';
+import RelatedVideos from './components/RelatedVideos/RelatedVideos';
 
 
 class App extends Component {
@@ -14,7 +14,7 @@ class App extends Component {
         title:'',
         comments: '',
         commentBody:'',
-        relatedVideos:'',
+        relatedVideos: [],
       }
   }
 
@@ -104,8 +104,8 @@ class App extends Component {
           </div>
           <br />
           <br />
-          <RealatedVideos/>
-          <CommentForm/>
+          <RelatedVideos videoArray={this.state.relatedVideos} />
+          <CommentForm />
 
         </React.Fragment>
       </div>
